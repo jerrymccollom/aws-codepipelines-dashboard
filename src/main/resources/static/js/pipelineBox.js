@@ -41,7 +41,7 @@ Vue.component('pipeline', {
                     }
                 }
                 componentScope.duration = ((max - min) / 60000).toFixed(1);
-                componentScope.startDate = moment(min).format('DD.MM.YYYY HH:mm:ss');
+                componentScope.startDate = moment(min).format('MM/DD/YYYY HH:mm:ss');
                 componentScope.commitMessage = commitMessage;
             });
         }
@@ -72,7 +72,10 @@ Vue.component('stage', {
             return this.stage.latestStatus === "inprogress";
         },
         latestExecutionDate: function () {
-            return moment(this.stage.lastStatusChange).format('DD.MM.YYYY HH:mm:ss');
+            if (this.stage.lastStatusChange == null) {
+                return "";
+            }
+            return moment(this.stage.lastStatusChange).format('MM/DD/YYYY HH:mm:ss');
         }
     }
 
