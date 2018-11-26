@@ -23,11 +23,22 @@ let PipelineService = function (jquery) {
             });
         },
         parsePipelineState = function (stageState, commitMessage) {
-            return {
+            let status = "", statusChange = null, url = "";
+            for (let i = 0; i < stageState.actionStates.length; i++) {
+              if (stageState.actionStates[i].latestExecution != null) {
+                status = stageState.actionStates[i].latestExecution.status.toLowerCase();
+                statusChange = stageState.actionStates[i].latestExecution.lastStatusChange;
+                url = stageState.actionStates[i].latestExecution.externalExecutionUrl;
+              }
+              if (status != "") {
+                  break;
+              }
+            }
+          return {
                 name: stageState.stageName,
-                latestStatus: stageState.actionStates[0].latestExecution.status.toLowerCase(),
-                lastStatusChange: stageState.actionStates[0].latestExecution.lastStatusChange,
-                externalExecutionUrl: stageState.actionStates[0].latestExecution.externalExecutionUrl,
+                latestStatus: status,
+                lastStatusChange: statusChange,
+                externalExecutionUrl: url,
                 commitMessage: commitMessage
             };
         },
